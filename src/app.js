@@ -1,8 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const itemsRoutes = require("./routes/itemsRoutes");
 const errorHandler = require("./middleware/errorHandler");
+const itemsRoutes = require("./routes/itemsRoutes");
 
 const app = express();
 
@@ -11,7 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
-app.use("/api/items", itemsRoutes);
+app.use("/api", itemsRoutes);
 
 // Error handling
 app.use(errorHandler);

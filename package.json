@@ -4,7 +4,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docker:build": "docker buildx build -t gcr.io/lvr-calculator/express-app --platform linux/amd64 .",
+    "docker:push": "docker push gcr.io/lvr-calculator/express-app",
+    "cloudRun": "gcloud run deploy express-app --image gcr.io/lvr-calculator/express-app --platform managed --region australia-southeast1 --allow-unauthenticated",
+    "deploy": "npm run docker:build && npm run docker:push && npm run cloudRun"
   },
   "keywords": [],
   "author": "",

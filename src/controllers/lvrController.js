@@ -8,6 +8,15 @@ const getItems = (req, res) => {
   res.json(items);
 };
 
+const calculateLVR = (req, res) => {
+  const { loanAmount, cashOutAmount, propertyValue } = req.body;
+  const lvr = ((loanAmount + cashOutAmount) / propertyValue) * 100;
+
+  setTimeout(() => {
+    res.status(200).json(lvr);
+  }, 1500);
+};
+
 const getItemById = (req, res) => {
   const itemId = parseInt(req.params.id);
   const item = items.find((i) => i.id === itemId);
@@ -48,4 +57,5 @@ module.exports = {
   createItem,
   updateItem,
   deleteItem,
+  calculateLVR,
 };
