@@ -9,12 +9,46 @@ const getItems = (req, res) => {
 };
 
 const calculateLVR = (req, res) => {
-  const { loanAmount, cashOutAmount, propertyValue } = req.body;
-  const lvr = ((loanAmount + cashOutAmount) / propertyValue) * 100;
+  try {
+    const { loanAmount, cashOutAmount, propertyValue } = req.body;
 
-  setTimeout(() => {
-    res.status(200).json(lvr);
-  }, 1500);
+    if (
+      loanAmount == null ||
+      cashOutAmount == null ||
+      propertyValue == null ||
+      isNaN(loanAmount) ||
+      isNaN(cashOutAmount) ||
+      isNaN(propertyValue)
+    ) {
+      return res
+        .status(400)
+        .json({ error: "All fields must be valid numbers." });
+    }
+
+    // Prevent division by zero
+    if (propertyValue <= 0) {
+      return res
+        .status(400)
+        .json({ error: "Property value must be greater than zero." });
+    }
+
+    const lvr =
+      ((Number(loanAmount) + Number(cashOutAmount)) / Number(propertyValue)) *
+      100;
+
+    if (!isFinite(lvr)) {
+      return res.status(400).json({ error: "Invalid LVR calculation." });
+    }
+
+    setTimeout(() => {
+      res.status(200).json({ lvr: lvr.toFixed(2) });
+    }, 1000);
+  } catch (error) {
+    console.error("Error calculating LVR:", error);
+    res
+      .status(500)
+      .json({ error: "Internal server error. Please try again later." });
+  }
 };
 
 const getItemById = (req, res) => {
